@@ -1,4 +1,4 @@
-console.log('coucou')
+
 // // Récupération de l'API
 const reponse = await fetch(`http://localhost:5678/api/works/`, {
     method: 'GET',
@@ -12,15 +12,15 @@ const travaux = await reponse.json();
 console.log(travaux)
 
 // Création des bouton en JS
-// let sectionPortfolio = document.querySelector('#portfolio')
-//     .innerHTML = '<h2>Mes Projets</h2>' +
-//     '<form id="filters">'
-//     + '<button id="buttonAll" class="btn" >Tous</button>'
-//     + '<button id="buttonObjects" class="btn" >Objets</button>'
-//     + '<button id="buttonAppartments" class="btn" >Appartements</button>'
-//     + '<button id="buttonHotelAndRestaurants" class="btn" >Hôtels & restaurants</button>' +
-//     '</form>'
-//     + '<div class="gallery"></div>';
+let sectionPortfolio = document.querySelector('#portfolio')
+    .innerHTML = '<h2>Mes Projets</h2>' +
+    '<form id="filters">'
+    + '<button id="buttonAll" class="btn" >Tous</button>'
+    + '<button id="buttonObjects" class="btn" >Objets</button>'
+    + '<button id="buttonAppartments" class="btn" >Appartements</button>'
+    + '<button id="buttonHotelAndRestaurants" class="btn" >Hôtels & restaurants</button>' +
+    '</form>'
+    + '<div class="gallery"></div>';
 
 // Boucle pour parcourir les éléments du tableau works
 function genererElements(travaux) {

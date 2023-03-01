@@ -1,4 +1,4 @@
-let travaux = [];
+let travaux;
 
 async function getWorks() {
     const reponse = await fetch(`http://localhost:5678/api/works/`, {
@@ -71,7 +71,7 @@ async function genererBoutons(categories) {
         name: 'Tous'
     }
     categories.unshift(boutonAll)
-
+    
     for (let categorie of categories) {
 
         btn = document.createElement('button')
@@ -82,16 +82,72 @@ async function genererBoutons(categories) {
         
         btn.style.padding = "9px 30px";
         console.log(btn)
-        
+        console.log(categorie)
         formFilters.appendChild(btn)
-    }
     
+        
+        }
+
+        genererElements(travaux)
+
+        document.querySelector('.btn')
+        .addEventListener("click", function (e) {
+            e.preventDefault();
+            const allCategory = travaux.filter(function (all) {
+                return all.categoryId
+    
+                
+            });
+    
+            console.log(allCategory);
+    
+            document.querySelector('.gallery').innerHTML = "";
+            genererElements(allCategory);
+            
+        });
+    
+            document.getElementById('1')
+        .addEventListener("click", function (event) {
+            event.preventDefault();
+            const categoryObjects = travaux.filter(function (objets) {
+                return objets.categoryId === 1;
+            });
+            console.log(categoryObjects)
+    
+            document.querySelector('.gallery').innerHTML = "";
+            genererElements(categoryObjects);
+        });
+    
+        document.getElementById('2')
+        .addEventListener("click", function (e) {
+            e.preventDefault();
+            const categoryAppartments = travaux.filter(function (appartments) {
+                return appartments.categoryId === 2;
+            });
+            console.log(categoryAppartments);
+    
+            document.querySelector(".gallery").innerHTML = "";
+            genererElements(categoryAppartments);
+        });
+    
+        document.getElementById('3')
+        .addEventListener("click", function (e) {
+            e.preventDefault();
+            const categoryHotelsAndRestaurants = travaux.filter(function (hotelsAndRestaurants) {
+                return hotelsAndRestaurants.categoryId === 3;
+            });
+            console.log(categoryHotelsAndRestaurants);
+    
+            document.querySelector(".gallery").innerHTML = "";
+            genererElements(categoryHotelsAndRestaurants);
+        });
+    }     
+
+
+    
+
    
-}
-
-
-
-async function genererElements() {
+async function genererElements(travaux) {
     for (let i = 0; i < travaux.length; i++) {
 
         // Création d'une balise dédiée au éléments  du tableau
@@ -110,62 +166,12 @@ async function genererElements() {
         // On rattache la balise figure à son parent .gallery
         document.querySelector(".gallery")
             .appendChild(cardElement);
-
+        
+           
     };
-
-}
-
-
-
-// document.querySelector('#buttonAll')
-//     .addEventListener("click", function (e) {
-//         e.preventDefault();
-//         const allCategory = travaux.filter(function (all) {
-//             return all.categoryId
-//         });
-
-//         console.log(allCategory);
-
-//         document.querySelector('.gallery').innerHTML = "";
-//         genererElements(allCategory);
-
-//     });
-
-// document.querySelector('#buttonObjects')
-//     .addEventListener("click", function (event) {
-//         event.preventDefault();
-//         const categoryObjects = travaux.filter(function (objets) {
-//             return objets.categoryId === 1;
-//         });
-//         console.log(categoryObjects)
-
-//         document.querySelector('.gallery').innerHTML = "";
-//         genererElements(categoryObjects);
-//     });
-
-// document.querySelector('#buttonAppartments')
-//     .addEventListener("click", function (e) {
-//         e.preventDefault();
-//         const categoryAppartments = travaux.filter(function (appartments) {
-//             return appartments.categoryId === 2;
-//         });
-//         console.log(categoryAppartments);
-
-//         document.querySelector(".gallery").innerHTML = "";
-//         genererElements(categoryAppartments);
-//     });
-
-// document.querySelector('#buttonHotelAndRestaurants')
-//     .addEventListener("click", function (e) {
-//         e.preventDefault();
-//         const categoryHotelsAndRestaurants = travaux.filter(function (hotelsAndRestaurants) {
-//             return hotelsAndRestaurants.categoryId === 3;
-//         });
-//         console.log(categoryHotelsAndRestaurants);
-
-//         document.querySelector(".gallery").innerHTML = "";
-//         genererElements(categoryHotelsAndRestaurants);
-//     });
+    
+    
+};
 
 
 
