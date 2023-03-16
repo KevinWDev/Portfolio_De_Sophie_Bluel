@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
         rel="stylesheet">
         <link rel="stylesheet" href="assets/styleLogIn.css">
-        <script src="logIn.js" type="module"></script>
+        <script src="login.js" type="module"></script>
 </head>
 
 <body>
@@ -29,14 +29,17 @@
 </header>
 <section id="logIn">
 <h2>Log In</h2>
-<form method="post" id="formLogIn">
+<form action= "" method="post" id="formLogIn">
     
     <label for="email">E-mail</label>
     <input type="email" name="email" id="email">
+    <br />
+    <span id="errorEmail"></span>
 
     <label for="password">Mot de passe</label>
     <input type="password" name="password" id="password">
-
+    <br />
+    <span id="error"></span>
     <input type="submit" value="Se connecter" id="submit"></input>
 
     <a href="#">Mot de pass oublié</a>
