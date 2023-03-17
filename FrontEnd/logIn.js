@@ -50,6 +50,30 @@ async function connexion() {
 
 connexion();
 
+// ********** A TESTE **********
+
+// let emailValidation = document.querySelector('#email')
+// emailValidation.addEventListener("invalid", function (event) {
+//   event.target.setCustomValidity("")
+//   if(!event.target.validity.valid) {
+//     if (event.target.value != users.email.value)
+//     event.target.setCustomValidity("L'email est incorrect ! ")
+//   } 
+// })
+
+
+// let passwordValidity = document.querySelector('#password')
+// passwordValidity.addEventListener("invalid", function (event) {
+//   event.target.setCustomValidity("")
+//   if(!event.target.validity.valid) {
+//     if (event.target.value != users.password.value)
+//     event.target.setCustomValidity("Le mot de passe incorrect ! ")
+//   } 
+// })
+// **********************************
+
+
+
 
 
 // // HEADER AVEC BANNIERE EDITEUR

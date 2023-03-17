@@ -1,6 +1,6 @@
 let travaux = [];
 
-export async function getWorks() {  
+export async function getWorks() {
     // Appel de l'API
     const reponse = await fetch(`http://localhost:5678/api/works/`, {
         method: 'GET',
@@ -13,9 +13,9 @@ export async function getWorks() {
         // Réponse de l'API
         travaux = await reponse.json();
         console.log(travaux)
-        
+
         genererElements(travaux)
-        
+
     } else {
         throw new Error("Impossible d'accéder au serveur !");
     };
@@ -44,7 +44,7 @@ async function getCategory() {
         console.log(categories);
 
         genererBoutons(travaux);
-        
+
 
     } else {
         throw new Error("Impossible d'accéder au serveur !");
@@ -53,16 +53,23 @@ async function getCategory() {
 
 getCategory();
 
-let btn;
 
+let btn;
+// Récupération de la balise section avec id portfolio
 const sectionPortfolio = document.querySelector('#portfolio');
+
+// Création d'un formulaire
 const formFilters = document.createElement('form');
 formFilters.setAttribute("id", "filters");
 
+// Ajout du foprmulaire au paent avec l'id portfolio
 sectionPortfolio.appendChild(formFilters);
 
+// Récupération de la div galerie
 const gallery = document.querySelector('.gallery');
 formFilters.after(gallery);
+
+
 
 async function genererBoutons() {
     let boutonAll = {
@@ -74,37 +81,34 @@ async function genererBoutons() {
     for (let categorie of categories) {
         console.log(categorie.id);
         btn = document.createElement('button');
-        
+
         btn.innerText = categorie.name;
         btn.setAttribute("id", categorie.id);
         btn.setAttribute("class", "btn");
-        
+
         btn.style.padding = "9px 30px";
-        
+
         formFilters.appendChild(btn);
         btn.addEventListener("click", function (e) {
             e.preventDefault();
-            const category = travaux.filter(function (all) {
+            const category = travaux.filter(function (travaux) {
                 // Si catégorie = 0 alors recupère tous sinon récupère que ceux ou l'id match
                 if (categorie.id === 0) {
                     return true;
-                 } else {
-                    return all.categoryId === categorie.id;
-                 };
-        
+                } else {
+                    return travaux.categoryId === categorie.id;
+                };
+
             });
-    
+
             console.log(category);
-            
+
             document.querySelector('.gallery').innerHTML = "";
             genererElements(category);
-            
-        });
-    
-        };
- 
 
+        });
     };
+};
 
 
 // Fonction qui génère les travaux   
@@ -126,10 +130,6 @@ export async function genererElements(travaux) {
         // On rattache la balise figure à son parent .gallery
         document.querySelector(".gallery")
             .appendChild(cardElement);
-        
-          let b = travaux[i].id
-          console.log(b)
-          
-          
-    };       
+
+    };
 };

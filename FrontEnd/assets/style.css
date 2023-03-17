@@ -360,7 +360,7 @@ a:hover {
 	margin-bottom: 68px;
 }
 
-/* BOUTON figureIntro, block-hpictures2 */
+/* BOUTON figureIntro, block-picturesh2 */
 #figureIntro a i,
 #bloc-h2 a i
 {
@@ -370,7 +370,19 @@ a:hover {
 
 
 /* CSS POUR MODAL */
+.modal {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+	
 
+}
 .modal-wrapperTravaux img {
 	width: 100%;
 	height: 104px;
@@ -390,19 +402,6 @@ a:hover {
 	background-color: #FFFEF8;
 }
 
-.modal {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.8);
-	
-
-}
 
 .modal-wrapper,
 .modal-wrapper-add-pictures {
@@ -420,6 +419,10 @@ a:hover {
 	margin: auto;
 	display: flex;
 	flex-direction: column;
+	border-radius: 10px;
+}
+
+#formAddTravaux {
 	border-radius: 10px;
 }
 
@@ -456,27 +459,6 @@ a:hover {
 	position: relative;
 }
 
-/* .iconPoubelle {
-	font-size: 9px;
-	background: black;
-	color: white;
-	border-radius: 2px;
-} */
-
-/* .iconFleche {
-	font-size: 9px;
-	background: black;
-	color: white;
-	border-radius: 2px;
-} */
-
-/* #btnPoubelle {
-	position: absolute;
-	right: 6px;
-	top: 6px;
-	border: none;
-	padding: 4px;
-} */
 
 .btnPoubelle {
 	position: absolute;
@@ -492,7 +474,7 @@ a:hover {
 	opacity: 0;
 }
 
-.iconFleche {
+.iconFlecheEdit {
 	position: absolute;
 	top: 6px;
 	right: 26px;
@@ -506,12 +488,10 @@ a:hover {
 	border-radius: 2px;
 	opacity: 0;
 }
-.figureModal:hover .iconFleche,
+.figureModal:hover .iconFlecheEdit,
 .figureModal:hover .iconPoubelle{
 	opacity: 1;
 }
-
-
 
 .js-btn-close,
 .js-btn-close-pictures {
@@ -523,6 +503,8 @@ a:hover {
 	background-color: #FFFEF8;
 	padding: 0;
 }
+
+/* CSS div ajout travaux */
 
 .arrow-left {
 	position: absolute;
@@ -685,4 +667,35 @@ input[type="file"] {
 	bottom: 20px;
 	left: 22%;
 	
+}
+
+#confirmAddWorks {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: 'Syne';
+	z-index: 1;
+	top: 35%;
+	left: 25%;
+	width: 50%;
+	height: 100px;
+	border-radius: 10px;
+	background-color: white;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+}
+
+#btnConfirmAddWorks {
+	position: absolute;
+	background-color: #1D6154;
+	color: white;
+	border: none;
+	bottom: 10px;
+	border-radius: 10px;
+	padding: 7px;
+	width: 50px;
+}
+
+#confirmAddWorks p {
+	margin-top: 25px;
 }

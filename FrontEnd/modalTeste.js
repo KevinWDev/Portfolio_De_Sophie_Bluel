@@ -1,3 +1,6 @@
+import { getWorks } from "./index.js";
+import { genererElements } from "./index.js";
+
 let travauxModal = [];
 
 let token = sessionStorage.getItem("token")
@@ -139,7 +142,7 @@ function creationBoutonModifier() {
 
     // BOUTON MODIFIER INTRODUCTION
     let btnModifier;
-    // Récupération de la balise figure
+    // Récupération de la balise figure pour ajouter btn modifier
     const figureIntroIndex = document.querySelector('#introduction figure');
     figureIntroIndex.setAttribute("id", "figureIntro");
 
@@ -156,7 +159,7 @@ function creationBoutonModifier() {
     const portfolio = document.querySelector('#portfolio');
     const titleProjets = document.querySelector('#portfolio h2');
 
-    // Création d'une div
+    // Création d'une div pour ajouter le titre et un btn modifier
     const divH2 = document.createElement('div');
     divH2.setAttribute("id", "bloc-h2");
 
@@ -164,37 +167,22 @@ function creationBoutonModifier() {
     const filters = document.querySelector('#filters');
     filters.style.display = "none";
 
-    // Ajout du h2 à la div
+    // Ajout du h2 à la div (divH2)
     divH2.append(titleProjets);
 
-    // Ajout de la div à la section portfolio
+    // Ajout de la divH2 à la section portfolio
     portfolio.append(divH2);
 
     // Passer la divH2 avant les filtres
     filters.before(divH2);
-    // divH2.after(filters)
-
+  
     // Création du bouton modifier
-
-    // const btnModifierH2 = document.createElement('a');
-    // btnModifierH2.setAttribute("class", "btnModifierEditer");
-    // btnModifierH2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>modifier`;
-
-    // // Ajout du bouton à la divH2
-    // divH2.append(btnModifierH2)
-
     btnModifier = document.createElement('a');
     btnModifier.setAttribute("class", "btnModifierEditer");
     btnModifier.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>modifier`;
 
     // Ajout du bouton à la divH2
     divH2.append(btnModifier);
-
-    // const btnModifierH2 = document.createElement('a')
-    // btnModifierH2.setAttribute("id", "btnModifierH2");
-    // btnModifierH2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>modifier`;
-
-    // titleProjets.append(btnModifierH2)
 
 };
 creationBoutonModifier()
@@ -222,10 +210,10 @@ async function genererElementsModal(travauxModal) {
         // console.log(btnIconPoubelle)
         cardElement.append(btnIconPoubelle)
 
-        let btnIconFleche = document.createElement('button');
-        btnIconFleche.setAttribute("class", "fa-solid fa-up-down-left-right iconFleche")
+        let btnIconFlecheEdit = document.createElement('button');
+        btnIconFlecheEdit.setAttribute("class", "fa-solid fa-up-down-left-right iconFlecheEdit")
 
-        cardElement.append(btnIconFleche)
+        cardElement.append(btnIconFlecheEdit)
 
         // Création de l'élément img
         const imageElement = document.createElement('img');
@@ -270,8 +258,7 @@ async function genererElementsModal(travauxModal) {
 // document.querySelectorAll('.btnPoubelle').forEach(button => {
 //     button.addEventListener('click', deleted)
 // });
-import { getWorks } from "./index.js";
-import { genererElements } from "./index.js";
+
 
 async function deleted(event) {
 event.preventDefault()
@@ -293,6 +280,7 @@ event.preventDefault()
         getWorksModal()
         // genererElementsModal()
         document.querySelector('.gallery').innerHTML = "";
+
         getWorks()
         // genererElements()
        
@@ -351,8 +339,6 @@ event.preventDefault()
     }
 
 
-
-
     // Fonction pour close modal
      function closeModal(e) {
         if (modal === null) return;
@@ -376,6 +362,17 @@ event.preventDefault()
 
         modal = null;
 
+        
+        // reset le formulaire si on ferme la modal
+        document.querySelector('#formAddTravaux').reset()
+    
+        // Remove ajout de l'image si on ferme modal
+        document.getElementById('figureImageFile').remove();
+
+        // Display none la div de confirmation trravail ajouté si on quitte la modal
+        document.querySelector('#confirmAddWorks').style.display = "none";
+        
+        document.querySelector('.messageErreur').style.display = "none"
     }
 
  
@@ -387,7 +384,7 @@ event.preventDefault()
     // Fonction pour ouvrir la div "Ajouter photo"
     function newModal(e) {
         e.preventDefault();
-        
+
         modal.querySelector('.modal-wrapper').style.display = "none";
         modal.querySelector('.modal-wrapper-add-pictures').style.display = null;
         // modal1.style.display = "none"
@@ -395,7 +392,6 @@ event.preventDefault()
         modal.addEventListener('click', closeModal);
         modal.querySelector('.js-btn-close-pictures').addEventListener('click', closeModal);
         modal.querySelector('.js-modal-stop-pictures').addEventListener('click', stopPropagation);
-
 
     }
 
@@ -409,13 +405,22 @@ event.preventDefault()
         e.preventDefault();
         modal.querySelector('.modal-wrapper').style.display = null;
         modal.querySelector('.modal-wrapper-add-pictures').style.display = "none";
-    }
 
+        // On reset le formulaire d'ajout de travaux quand on fait un retour
+        document.querySelector('#formAddTravaux').reset()
+
+        // On remove l'image de prévisualisation si retour
+        document.getElementById('figureImageFile').remove();
+
+        // On display none la div de confirmation de travaux ajouté si on fait un retour
+        document.querySelector('#confirmAddWorks').style.display = "none"
+
+        
+    }
 
 
     // Fonction pour stoper la propagation par défaut
     const stopPropagation = function (e) {
-        
         e.stopPropagation();
     }
 
@@ -438,19 +443,45 @@ event.preventDefault()
 
 // ********** Ajout travaux **********
 
+// Fonction qui vérifie la validiter de l'input
+const title = document.querySelector('#titrePictures')
+
+// On ajoute un listener "invalid"
+title.addEventListener("invalid", function(event) {
+    event.target.setCustomValidity("");
+
+    if(!event.target.validity.valid) {
+        // Si le champ est vide on modifie le message
+        if (event.target.value.length == 0) {
+            event.target.setCustomValidity("Veuillez ajouter un titre")
+        }
+    }
+    
+})
+
+// Récupération de la div pour afficher le message si l'envoie des travaux a réussi
+
+const confirmAddWorks = document.querySelector('#confirmAddWorks');
+// Récupération de la balise pour mettre un message d'erreur
+let myErrorForm = document.querySelector('.messageErreur')
+
+
+// Fonction pour ajouter les travaux
 function ajoutTravaux() {
 
+    // On récupère le formulaire d'ajout des travaux
     const formAjoutTravaux = document.querySelector('#formAddTravaux')
     console.log(formAjoutTravaux)
-
+    
+    // On ajoute un Listener submit
     formAjoutTravaux.addEventListener("submit", async function (e) {
         e.preventDefault()
 
+        // On récupère les valeurs des inputs
         let title = document.querySelector('#titrePictures').value;
         let image = document.querySelector('#addPictures').files[0];
         let category = document.querySelector('#categoriePictures').value;
-        // category.options[category.selectedIndex].value
-
+        
         console.log(category);
 
         const formData = new FormData();
@@ -458,101 +489,75 @@ function ajoutTravaux() {
         formData.append("image", image);
         formData.append("category", category);
 
-
+        // Requête API
         const response = await fetch(`http://localhost:5678/api/works/`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                // 'Content-type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
             },
 
             body: formData
         });
 
-        if (!response.ok) {
-            e.preventDefault()
+        if (response.ok) {
+            // Si reponse = true on reset le formulaire
+            document.querySelector('#formAddTravaux').reset()
             
-            let myErrorForm = document.querySelector('.messageErreur')
-            myErrorForm.style.display = "block"
-            myErrorForm.innerText = "Erreur dans le formulaire, veuillez ajouter une image"
-            throw new Error(`Une erreur est survenue`)
-        
+            // On remove le listener qui permet de fermer la modal
+            modal.removeEventListener('click', closeModal);
+            modal.querySelector('.js-btn-close-pictures').removeEventListener('click', closeModal);
+            modal.querySelector('.js-modal-stop-pictures').removeEventListener('click', stopPropagation);
+           
+            // On fait apparaître notre message de confirmation
+            confirmAddWorks.style.display = null;
 
-        } else {
+            // On refresh la page
             document.querySelector('.modal-wrapperTravaux').innerHTML = "";
-        getWorksModal()
+            // Appel de la fonction pour afficher les travaux ajouter
+            getWorksModal()
         // genererElementsModal()
-        document.querySelector('.gallery').innerHTML = "";
-        getWorks()
+            document.querySelector('.gallery').innerHTML = "";
+            getWorks()
+            
         // genererElements()
             
-        }
+            /* Si il y a eu un message d'erreur et que tous les champ
+            on bien était rempli on enlève le message d'erreur*/
+            myErrorForm = document.querySelector('.messageErreur')
+            myErrorForm.style.display = "none"
+        } else {
         
+            // On récupère notre balise pour le message d'erreur
+            myErrorForm = document.querySelector('.messageErreur')
+            myErrorForm.style.display = "block"
+            myErrorForm.innerText = "Erreur dans le formulaire, veuillez ajouter une image"
+            
+            throw new Error(`Une erreur est survenue`)
+        } 
         
     })
 }
 ajoutTravaux()
 
-// async function ajoutTravaux() {
 
-//     const formAjoutTravaux = document.querySelector('#formAddTravaux')
-//     console.log(formAjoutTravaux)
+// On récupère notre btn de confirmation
+const btnConfirmAddWorks = document.querySelector('#btnConfirmAddWorks')
 
-//     formAjoutTravaux.addEventListener("submit", async function (e) {
-//         try {
-
-//             e.preventDefault()
-
-//             let title = document.querySelector('#titrePictures').value;
-//             let image = document.querySelector('#addPictures').files[0];
-//             let category = document.querySelector('#categoriePictures').value;
-//             // category.options[category.selectedIndex].value
-
-//             console.log(category);
-
-//             const formData = new FormData(); 
-//             formData.append("title", title);
-//             formData.append("image", image);
-//             formData.append("category", category);
-
-
-//             const response = await fetch(`http://localhost:5678/api/works/`, {
-//                 method: 'POST',
-//                 headers: {
-//                     'Accept': 'application/json',
-//                     // 'Content-type': 'multipart/form-data',
-//                     'Authorization': `${token}`,
-//                 },
-
-//                 body: formData
-//             });
-
-//             const dataResponse = await response.json();
-
-//             if (response.ok === true) {
-
-//                 console.log(response)
-//                 console.log(dataResponse)
-
-
-//                 //                 document.querySelector('.modal-wrapper').innerHTML = "";
-//                 // genererElementsModal(travauxModal)
-//                 // document.querySelector('.gallery').innerHTML = "";
-//                 // getWorks(travaux)
-
-//             } else {
-//                 console.log(response)
-//                 console.log(dataResponse)
-//                 throw new Error (dataResponse.error)
-//             }
-//         }catch(error){
-//             console.log(error)
-//         }
-
-//         })
-//     }
-
+// On ajoute un listener
+btnConfirmAddWorks.addEventListener('click', (e) => {
+    e.preventDefault()
+    // On remove l'image si le formulaire est envoyé
+    document.getElementById('figureImageFile').remove();
+    // On remet le listener pour close modal
+    modal.addEventListener('click', closeModal);
+    
+    modal.querySelector('.js-btn-close-pictures').addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop-pictures').addEventListener('click', stopPropagation);
+   
+    // On retire ensuite le message de validation
+    confirmAddWorks.style.display = "none"
+});
 
 
 // *********************************************************
@@ -638,6 +643,7 @@ function displayImage(event, file) {
 const userImage = document.querySelector('#addPictures')
 userImage.addEventListener('input', function (e) {
     e.preventDefault()
+    
     const fileList = userImage.files
     console.log(fileList)
     console.log(fileList[0])

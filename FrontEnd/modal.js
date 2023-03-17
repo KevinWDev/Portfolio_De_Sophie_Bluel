@@ -174,12 +174,7 @@ function creationBoutonModifier() {
 
     // Création du bouton modifier
 
-    // const btnModifierH2 = document.createElement('a');
-    // btnModifierH2.setAttribute("class", "btnModifierEditer");
-    // btnModifierH2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>modifier`;
-
-    // // Ajout du bouton à la divH2
-    // divH2.append(btnModifierH2)
+    
 
     btnModifier = document.createElement('a');
     btnModifier.setAttribute("class", "btnModifierEditer");
@@ -188,11 +183,6 @@ function creationBoutonModifier() {
     // Ajout du bouton à la divH2
     divH2.append(btnModifier);
 
-    // const btnModifierH2 = document.createElement('a')
-    // btnModifierH2.setAttribute("id", "btnModifierH2");
-    // btnModifierH2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>modifier`;
-
-    // titleProjets.append(btnModifierH2)
 
 };
 

@@ -15,8 +15,8 @@
 		integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script src="index.js" type="module"></script>
-	<script src="modal.js" type="module"></script>
-	<!-- <script src="modalTeste.js" type="module"></script> -->
+	<!-- <script src="modal.js" type="module"></script> -->
+	<script src="modalTeste.js" type="module"></script>
 
 </head>
 
@@ -67,9 +67,13 @@
 			</div>
 
 			<form action="" method="post" id="formAddTravaux">
+				
 				<div class="modal-wrapper-add-pictures js-modal-stop-pictures" style="display: none;">
 
-
+					<div id="confirmAddWorks" style="display: none;">
+						<p>Votre travail a été ajoutée avec succès !</p>
+						<button id="btnConfirmAddWorks">Ok</button>
+					</div>
 					<button i class="fa fa-arrow-left arrow-left"></i></button>
 
 					<button i class="fa-solid fa-xmark js-btn-close-pictures"></i></button>
