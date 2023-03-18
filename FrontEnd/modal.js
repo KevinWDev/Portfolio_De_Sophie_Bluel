@@ -1,8 +1,11 @@
+import { getWorks } from "./index.js";
+
 let travauxModal = [];
 
-let token = sessionStorage.getItem("token");
+let token = sessionStorage.getItem("token")
 
 async function getWorksModal() {
+    
     // Appel de l'API pour récupérer les travaux modal
     const reponse = await fetch(`http://localhost:5678/api/works/`, {
         method: 'GET',
@@ -14,22 +17,19 @@ async function getWorksModal() {
     });
     if (reponse.ok === true && token) {
         // Réponse de l'API
-        travauxModal = await reponse.json();
-        console.log(travauxModal);
+        travauxModal = await reponse.json()
+        console.log(travauxModal)
 
-        changeIndexHtml();
-        creationBoutonModifier();
-        genererElementsModal(travauxModal);
-        // openCloseModale()
-        ajoutTravaux();
-        // genererBoutons(travauxModal)
+        genererElementsModal(travauxModal)
+       
 
     } else {
-        throw new Error(`Impossible d'accéder au serveur !`);
+        throw new Error(`Impossible d'accéder au serveur !`)
     };
 };
 
 await getWorksModal();
+
 
 
 let categoriesOptionModal = [];
@@ -43,13 +43,13 @@ async function getCategoryOptionModal() {
         },
     });
 
-    if (reponse.ok === true) {
+    if (reponse.ok === true && token) {
         // Réponse de l'API (catégories) au format JSON
         categoriesOptionModal = await reponse.json();
         console.log(categoriesOptionModal);
 
-        genererOption();
-        // genererBoutons(travaux);
+        genererOption()
+        
 
     } else {
         throw new Error("Impossible d'accéder au serveur !");
@@ -59,28 +59,29 @@ async function getCategoryOptionModal() {
 getCategoryOptionModal();
 
 
-
+// Récupération de la balise <select>
 const selectGroupe = document.querySelector('#categoriePictures');
-console.log(selectGroupe);
+
 
 async function genererOption() {
     
     for (let categorieId of categoriesOptionModal) {
-        console.log(categorieId.id);
+        console.log(categorieId.id)
 
-        let option = document.createElement('option');
-        option.innerText = categorieId.name;
-        // option.setAttribute("id", categorieId.id)
-        option.setAttribute("value", categorieId.id);
-        option.setAttribute("class", "groupeOption");
+        // Création des balise <option>
+        let option = document.createElement('option')
+        option.innerText = categorieId.name
         
-        selectGroupe.append(option);
+        option.setAttribute("value", categorieId.id)
+        option.setAttribute("class", "groupeOption")
+        
+        selectGroupe.append(option)
         
     }
 }
 
-// HEADER AVEC BANNIERE EDITEUR
 
+// HEADER AVEC BANNIERE EDITEUR
 function changeIndexHtml() {
 
     // Récupération de la balise header
@@ -119,7 +120,7 @@ function changeIndexHtml() {
     // //  Récupération id login pour faire le retour index
     let logout = document.querySelector('#login');
     logout.innerHTML = "logout";
-    logout.setAttribute('href', "index.html");
+    logout.setAttribute('href', "index.html")
     logout.addEventListener('click', logoutIndex);
 
     // Fonction pour retrouner sur la page index
@@ -129,15 +130,14 @@ function changeIndexHtml() {
         window.location.href = "index.html";
     };
 }
+changeIndexHtml()
 
-
-
+//   let btnModifier;
 // BOUTON MODIFIER
 function creationBoutonModifier() {
-
     // BOUTON MODIFIER INTRODUCTION
     let btnModifier;
-    // Récupération de la balise figure
+    // Récupération de la balise figure pour ajouter btn modifier
     const figureIntroIndex = document.querySelector('#introduction figure');
     figureIntroIndex.setAttribute("id", "figureIntro");
 
@@ -154,7 +154,7 @@ function creationBoutonModifier() {
     const portfolio = document.querySelector('#portfolio');
     const titleProjets = document.querySelector('#portfolio h2');
 
-    // Création d'une div
+    // Création d'une div pour ajouter le titre et un btn modifier
     const divH2 = document.createElement('div');
     divH2.setAttribute("id", "bloc-h2");
 
@@ -162,20 +162,16 @@ function creationBoutonModifier() {
     const filters = document.querySelector('#filters');
     filters.style.display = "none";
 
-    // Ajout du h2 à la div
+    // Ajout du h2 à la div (divH2)
     divH2.append(titleProjets);
 
-    // Ajout de la div à la section portfolio
+    // Ajout de la divH2 à la section portfolio
     portfolio.append(divH2);
 
     // Passer la divH2 avant les filtres
     filters.before(divH2);
-    // divH2.after(filters)
-
+  
     // Création du bouton modifier
-
-    
-
     btnModifier = document.createElement('a');
     btnModifier.setAttribute("class", "btnModifierEditer");
     btnModifier.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>modifier`;
@@ -183,9 +179,8 @@ function creationBoutonModifier() {
     // Ajout du bouton à la divH2
     divH2.append(btnModifier);
 
-
 };
-
+creationBoutonModifier()
 
 async function genererElementsModal(travauxModal) {
     for (let i = 0; i < travauxModal.length; i++) {
@@ -196,24 +191,24 @@ async function genererElementsModal(travauxModal) {
         // cardElement.id = travauxModal[i].id
         // console.log(cardElement)
 
-        cardElement.setAttribute("id", travauxModal[i].id);
+        cardElement.setAttribute("id", travauxModal[i].id)
 
         // let iconCorbeille = `<button id="btnFigure" class="fa-solid fa-trash-can iconFigure"></i></button>`;
         // let iconCorbeille = `<button class="fa-solid fa-trash-can iconPoubelle  btnPoubelle"></i></button>`;
         // cardElement.innerHTML = iconCorbeille;
 
-        let btnIconPoubelle = document.createElement('button');
+        let btnIconPoubelle = document.createElement('button')
         btnIconPoubelle.setAttribute("class", "fa-solid fa-trash-can iconPoubelle  btnPoubelle");
         // btnIconPoubelle.setAttribute("id", travauxModal[i].id)
 
-        btnIconPoubelle.id = travauxModal[i].id;
+        btnIconPoubelle.id = travauxModal[i].id
         // console.log(btnIconPoubelle)
-        cardElement.append(btnIconPoubelle);
+        cardElement.append(btnIconPoubelle)
 
-        let btnIconFleche = document.createElement('button');
-        btnIconFleche.setAttribute("class", "fa-solid fa-up-down-left-right iconFleche");
+        let btnIconFlecheEdit = document.createElement('button');
+        btnIconFlecheEdit.setAttribute("class", "fa-solid fa-up-down-left-right iconFlecheEdit")
 
-        cardElement.append(btnIconFleche);
+        cardElement.append(btnIconFlecheEdit)
 
         // Création de l'élément img
         const imageElement = document.createElement('img');
@@ -229,7 +224,7 @@ async function genererElementsModal(travauxModal) {
         document.querySelector(".modal-wrapperTravaux")
             .appendChild(cardElement);
 
-        btnIconPoubelle.addEventListener("click", deleted);
+        btnIconPoubelle.addEventListener("click", deleted)
 
     };
 }
@@ -258,8 +253,7 @@ async function genererElementsModal(travauxModal) {
 // document.querySelectorAll('.btnPoubelle').forEach(button => {
 //     button.addEventListener('click', deleted)
 // });
-import { getWorks } from "./index.js";
-import { genererElements } from "./index.js";
+
 
 async function deleted(event) {
 event.preventDefault()
@@ -277,7 +271,13 @@ event.preventDefault()
     if (response.ok) {
 
         
-       
+        document.querySelector('.modal-wrapperTravaux').innerHTML = "";
+        getWorksModal()
+        // genererElementsModal()
+        document.querySelector('.gallery').innerHTML = "";
+
+        getWorks()
+        // genererElements()
        
         // document.querySelector('.modal-wrapper').innerHTML = "";
         // genererElementsModal()
@@ -286,7 +286,7 @@ event.preventDefault()
         // genererElements()
 
     } else {
-        throw new Error('Impossible');
+        throw new Error('Impossible')
         // document.querySelector('.gallery').innerHTML = "";
         // getWorks(travaux)
     }
@@ -333,8 +333,6 @@ event.preventDefault()
 
     }
 
-    
-
 
     // Fonction pour close modal
      function closeModal(e) {
@@ -359,11 +357,18 @@ event.preventDefault()
 
         modal = null;
 
-        // remove l'ajout de l'image si on ferme la modal
-        document.getElementById('figureImageFile').remove();
         
-    }
+        // reset le formulaire si on ferme la modal
+        document.querySelector('#formAddTravaux').reset()
     
+        // Remove ajout de l'image si on ferme modal
+        document.getElementById('figureImageFile').remove();
+
+        // Display none la div de confirmation trravail ajouté si on quitte la modal
+        document.querySelector('#confirmAddWorks').style.display = "none";
+        
+        document.querySelector('.messageErreur').style.display = "none"
+    }
 
  
 
@@ -374,7 +379,7 @@ event.preventDefault()
     // Fonction pour ouvrir la div "Ajouter photo"
     function newModal(e) {
         e.preventDefault();
-        
+
         modal.querySelector('.modal-wrapper').style.display = "none";
         modal.querySelector('.modal-wrapper-add-pictures').style.display = null;
         // modal1.style.display = "none"
@@ -382,7 +387,6 @@ event.preventDefault()
         modal.addEventListener('click', closeModal);
         modal.querySelector('.js-btn-close-pictures').addEventListener('click', closeModal);
         modal.querySelector('.js-modal-stop-pictures').addEventListener('click', stopPropagation);
-
 
     }
 
@@ -396,8 +400,18 @@ event.preventDefault()
         e.preventDefault();
         modal.querySelector('.modal-wrapper').style.display = null;
         modal.querySelector('.modal-wrapper-add-pictures').style.display = "none";
-    }
 
+        // On reset le formulaire d'ajout de travaux quand on fait un retour
+        document.querySelector('#formAddTravaux').reset()
+
+        // On remove l'image de prévisualisation si retour
+        document.getElementById('figureImageFile').remove();
+
+        // On display none la div de confirmation de travaux ajouté si on fait un retour
+        document.querySelector('#confirmAddWorks').style.display = "none"
+
+        
+    }
 
 
     // Fonction pour stoper la propagation par défaut
@@ -424,19 +438,45 @@ event.preventDefault()
 
 // ********** Ajout travaux **********
 
+// Fonction qui vérifie la validiter de l'input
+const title = document.querySelector('#titrePictures')
+
+// On ajoute un listener "invalid"
+title.addEventListener("invalid", function(event) {
+    event.target.setCustomValidity("");
+
+    if(!event.target.validity.valid) {
+        // Si le champ est vide on modifie le message
+        if (event.target.value.length == 0) {
+            event.target.setCustomValidity("Veuillez ajouter un titre")
+        }
+    }
+    
+})
+
+// Récupération de la div pour afficher le message si l'envoie des travaux a réussi
+
+const confirmAddWorks = document.querySelector('#confirmAddWorks');
+// Récupération de la balise pour mettre un message d'erreur
+let myErrorForm = document.querySelector('.messageErreur')
+
+
+// Fonction pour ajouter les travaux
 function ajoutTravaux() {
 
-    const formAjoutTravaux = document.querySelector('#formAddTravaux');
-    console.log(formAjoutTravaux);
-
+    // On récupère le formulaire d'ajout des travaux
+    const formAjoutTravaux = document.querySelector('#formAddTravaux')
+    console.log(formAjoutTravaux)
+    
+    // On ajoute un Listener submit
     formAjoutTravaux.addEventListener("submit", async function (e) {
-        e.preventDefault();
+        e.preventDefault()
 
+        // On récupère les valeurs des inputs
         let title = document.querySelector('#titrePictures').value;
         let image = document.querySelector('#addPictures').files[0];
         let category = document.querySelector('#categoriePictures').value;
-        // category.options[category.selectedIndex].value
-
+        
         console.log(category);
 
         const formData = new FormData();
@@ -444,35 +484,75 @@ function ajoutTravaux() {
         formData.append("image", image);
         formData.append("category", category);
 
-
+        // Requête API
         const response = await fetch(`http://localhost:5678/api/works/`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                // 'Content-type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
             },
 
             body: formData
         });
 
-        if (!response.ok) {
-            e.preventDefault()
+        if (response.ok) {
+            // Si reponse = true on reset le formulaire
+            document.querySelector('#formAddTravaux').reset()
             
-            let myErrorForm = document.querySelector('.messageErreur');
-            myErrorForm.style.display = "block";
-            myErrorForm.innerText = "Erreur dans le formulaire, veuillez ajouter une image";
-         
-            throw new Error(`Une erreur est survenue`);
+            // On remove le listener qui permet de fermer la modal
+            modal.removeEventListener('click', closeModal);
+            modal.querySelector('.js-btn-close-pictures').removeEventListener('click', closeModal);
+            modal.querySelector('.js-modal-stop-pictures').removeEventListener('click', stopPropagation);
+           
+            // On fait apparaître notre message de confirmation
+            confirmAddWorks.style.display = null;
 
-        } else {
+            // On refresh la page
+            document.querySelector('.modal-wrapperTravaux').innerHTML = "";
+            // Appel de la fonction pour afficher les travaux ajouter
+            getWorksModal()
+        // genererElementsModal()
+            document.querySelector('.gallery').innerHTML = "";
+            getWorks()
             
-        }
+        // genererElements()
+            
+            /* Si il y a eu un message d'erreur et que tous les champ
+            on bien était rempli on enlève le message d'erreur*/
+            myErrorForm = document.querySelector('.messageErreur')
+            myErrorForm.style.display = "none"
+        } else {
         
+            // On récupère notre balise pour le message d'erreur
+            myErrorForm = document.querySelector('.messageErreur')
+            myErrorForm.style.display = "block"
+            myErrorForm.innerText = "Erreur dans le formulaire, veuillez ajouter une image"
+            
+            throw new Error(`Une erreur est survenue`)
+        } 
         
     })
 }
+ajoutTravaux()
 
+
+// On récupère notre btn de confirmation
+const btnConfirmAddWorks = document.querySelector('#btnConfirmAddWorks')
+
+// On ajoute un listener
+btnConfirmAddWorks.addEventListener('click', (e) => {
+    e.preventDefault()
+    // On remove l'image si le formulaire est envoyé
+    document.getElementById('figureImageFile').remove();
+    // On remet le listener pour close modal
+    modal.addEventListener('click', closeModal);
+    
+    modal.querySelector('.js-btn-close-pictures').addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop-pictures').addEventListener('click', stopPropagation);
+   
+    // On retire ensuite le message de validation
+    confirmAddWorks.style.display = "none"
+});
 
 
 // *********************************************************
@@ -480,13 +560,13 @@ function ajoutTravaux() {
 // Prévisualisation de l'image
 
 // Récupération de l'input pour ajouter des travaux
-const fileUploadInput = document.querySelector('#addPictures');
+const fileUploadInput = document.querySelector('#addPictures')
 
-fileUploadInput.addEventListener('change', previewFile);
+fileUploadInput.addEventListener('change', previewFile)
 
 // fonction pour prévilualiser l'image
 function previewFile(e) {
-e.preventDefault();
+e.preventDefault()
 // Regex
     const file_extendion_regex = /\.(jpe?g|png|gif)$/i;
 
@@ -507,56 +587,93 @@ e.preventDefault();
 
     file_reader.addEventListener('load', function (event) {
         displayImage(event, file);
-        event.preventDefault();
+        event.preventDefault()
     })
 
 }
 
 
+
+
 function displayImage(event, file) {
-    event.preventDefault();
-    event.stopPropagation();
+    event.preventDefault()
+    event.stopPropagation()
 
     // Récupération du de la div pour ajouter l'image
     const blocImage = document.querySelector('#bloc-add-pictures');
 
     // Création d'une div pour accueillir l'image
-    const figureImageFile = document.createElement('figure');
-    figureImageFile.setAttribute('id', 'figureImageFile');
+    const figureImageFile = document.createElement('figure')
+    figureImageFile.setAttribute('id', 'figureImageFile')
 
     // Création d'une image
-    const imageElement = document.createElement('img');
+    const imageElement = document.createElement('img')
 
     // On récupère le resultat de l'image
     imageElement.src = event.target.result;
-    imageElement.setAttribute('id', 'imgFileInput');
+    imageElement.setAttribute('id', 'imgFileInput')
 
     // On créer un bouton pour pouvoir supprimer l'image
-    const delete_button_element = document.createElement('button');
-    delete_button_element.setAttribute('class', "fa-solid fa-trash-can image_delete_button");
+    const delete_button_element = document.createElement('button')
+    delete_button_element.setAttribute('class', "fa-solid fa-trash-can image_delete_button")
     
 
+
     // On ajoute l'élément image et le bouton à la div qui accueil l'image
-    figureImageFile.append(imageElement);
-    figureImageFile.append(delete_button_element);
+    figureImageFile.append(imageElement)
+    figureImageFile.append(delete_button_element)
     
     // On ajoute la duvImage au parent bloc-add-pictures
-    blocImage.append(figureImageFile);
+    blocImage.append(figureImageFile)
 
     // Fonction qui supprime l'image au click
     delete_button_element.addEventListener("click", (event) => {
-        fileUploadInput.value = "";
+        fileUploadInput.value = ""
 
         // Récupération du parent (figureImageFile)
         event.target.parentElement.remove();
     })
 }
 
-const userImage = document.querySelector('#addPictures');
+const userImage = document.querySelector('#addPictures')
 userImage.addEventListener('input', function (e) {
-    e.preventDefault();
-    const fileList = userImage.files;
-    console.log(fileList);
-    console.log(fileList[0]);
+    e.preventDefault()
+    
+    const fileList = userImage.files
+    console.log(fileList)
+    console.log(fileList[0])
 
-});
+})
+
+// let idWork;
+// let ids = [];
+// function supprMedia() {
+//     const poubelles = document.querySelectorAll('.btnPoubelle')
+//     for (let poubelle of poubelles) {
+//         poubelle.addEventListener("click", (e) => {
+//             e.preventDefault()
+//             idWork = e.target.parentNode.childNodes[0].currentSrc;
+//             ids.push(e.target.parentElement.dataset.id);
+            
+//             openCloseModale(e)
+//             console.log("ccc")
+//         })
+//     }
+// }
+
+// supprMedia()
+
+// const publierChangement = document.querySelector('#publierChangements')
+// publierChangement.addEventListener('click', () => {
+//     for (let i of ids) {
+//         fetch(`http://localhost:5678/api/works/${ids[i]}`, {
+//             method: 'DELETE',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 Authorization: `Bearer ${token}`
+//             }
+//         })
+//     }
+
+    
+// })
