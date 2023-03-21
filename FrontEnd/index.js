@@ -62,7 +62,7 @@ const sectionPortfolio = document.querySelector('#portfolio');
 const formFilters = document.createElement('form');
 formFilters.setAttribute("id", "filters");
 
-// Ajout du foprmulaire au paent avec l'id portfolio
+// Ajout du formulaire au parent avec l'id portfolio
 sectionPortfolio.appendChild(formFilters);
 
 // Récupération de la div galerie
@@ -91,20 +91,19 @@ async function genererBoutons() {
         formFilters.appendChild(btn);
         btn.addEventListener("click", function (e) {
             e.preventDefault();
-            const category = travaux.filter(function (travaux) {
+
+            const projetFiltres = travaux.filter(function (travaux) {
                 // Si catégorie = 0 alors recupère tous sinon récupère que ceux ou l'id match
                 if (categorie.id === 0) {
                     return true;
                 } else {
                     return travaux.categoryId === categorie.id;
-                };
-
+                };      
             });
 
-            console.log(category);
-
+            console.log(projetFiltres);
             document.querySelector('.gallery').innerHTML = "";
-            genererElements(category);
+            genererElements(projetFiltres);
 
         });
     };
@@ -112,7 +111,7 @@ async function genererBoutons() {
 
 
 // Fonction qui génère les travaux   
-export async function genererElements(travaux) {
+async function genererElements(travaux) {
     for (let i = 0; i < travaux.length; i++) {
 
         // Création d'une balise dédiée au éléments  du tableau

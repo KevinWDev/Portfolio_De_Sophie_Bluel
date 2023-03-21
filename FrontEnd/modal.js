@@ -5,7 +5,7 @@ let travauxModal = [];
 let token = sessionStorage.getItem("token")
 
 async function getWorksModal() {
-    
+
     // Appel de l'API pour récupérer les travaux modal
     const reponse = await fetch(`http://localhost:5678/api/works/`, {
         method: 'GET',
@@ -21,8 +21,7 @@ async function getWorksModal() {
         console.log(travauxModal)
 
         genererElementsModal(travauxModal)
-       
-
+        
     } else {
         throw new Error(`Impossible d'accéder au serveur !`)
     };
@@ -49,7 +48,7 @@ async function getCategoryOptionModal() {
         console.log(categoriesOptionModal);
 
         genererOption()
-        
+
 
     } else {
         throw new Error("Impossible d'accéder au serveur !");
@@ -62,23 +61,22 @@ getCategoryOptionModal();
 // Récupération de la balise <select>
 const selectGroupe = document.querySelector('#categoriePictures');
 
-
 async function genererOption() {
-    
+
     for (let categorieId of categoriesOptionModal) {
-        console.log(categorieId.id)
+        console.log(categorieId.id);
 
         // Création des balise <option>
-        let option = document.createElement('option')
-        option.innerText = categorieId.name
-        
-        option.setAttribute("value", categorieId.id)
-        option.setAttribute("class", "groupeOption")
-        
-        selectGroupe.append(option)
-        
-    }
-}
+        let option = document.createElement('option');
+        option.innerText = categorieId.name;
+
+        option.setAttribute("value", categorieId.id);
+        option.setAttribute("class", "groupeOption");
+
+        selectGroupe.append(option);
+
+    };
+};
 
 
 // HEADER AVEC BANNIERE EDITEUR
@@ -132,7 +130,7 @@ function changeIndexHtml() {
 }
 changeIndexHtml()
 
-//   let btnModifier;
+
 // BOUTON MODIFIER
 function creationBoutonModifier() {
     // BOUTON MODIFIER INTRODUCTION
@@ -170,7 +168,7 @@ function creationBoutonModifier() {
 
     // Passer la divH2 avant les filtres
     filters.before(divH2);
-  
+
     // Création du bouton modifier
     btnModifier = document.createElement('a');
     btnModifier.setAttribute("class", "btnModifierEditer");
@@ -182,27 +180,22 @@ function creationBoutonModifier() {
 };
 creationBoutonModifier()
 
+
+
 async function genererElementsModal(travauxModal) {
     for (let i = 0; i < travauxModal.length; i++) {
 
         // Création d'une balise dédiée au éléments  du tableau
         const cardElement = document.createElement('figure');
         cardElement.setAttribute("class", "figureModal");
-        // cardElement.id = travauxModal[i].id
-        // console.log(cardElement)
 
         cardElement.setAttribute("id", travauxModal[i].id)
-
-        // let iconCorbeille = `<button id="btnFigure" class="fa-solid fa-trash-can iconFigure"></i></button>`;
-        // let iconCorbeille = `<button class="fa-solid fa-trash-can iconPoubelle  btnPoubelle"></i></button>`;
-        // cardElement.innerHTML = iconCorbeille;
 
         let btnIconPoubelle = document.createElement('button')
         btnIconPoubelle.setAttribute("class", "fa-solid fa-trash-can iconPoubelle  btnPoubelle");
         // btnIconPoubelle.setAttribute("id", travauxModal[i].id)
-
         btnIconPoubelle.id = travauxModal[i].id
-        // console.log(btnIconPoubelle)
+
         cardElement.append(btnIconPoubelle)
 
         let btnIconFlecheEdit = document.createElement('button');
@@ -220,7 +213,7 @@ async function genererElementsModal(travauxModal) {
         cardElement.appendChild(imageElement);
         cardElement.appendChild(figcaptionElement);
 
-        // On rattache la balise figure à son parent .gallery
+        // On rattache la balise figure à son parent (modal-wrapper)
         document.querySelector(".modal-wrapperTravaux")
             .appendChild(cardElement);
 
@@ -229,37 +222,13 @@ async function genererElementsModal(travauxModal) {
     };
 }
 
-
-// let boutonPoubelle = document.querySelectorAll('.btnPoubelle')
-// console.log(boutonPoubelle)
-// for (let i = 0; i < boutonPoubelle.length; i++) {
-//     boutonPoubelle[i].addEventListener("click", async function(e) {
-//         e.preventDefault()
-//         console.log(e)
-//         let id = e.target.id
-
-//         const response = await fetch(`http://localhost:5678/api/works/${id}`, {
-//             method: 'DELETE',
-//             headers: {
-//                 'Authorization': `Bearer ${token}`,
-//                 'Accept': 'application/json',
-//             }
-//         })
-//         if (response)
-
-//     })
-// }
-
-// document.querySelectorAll('.btnPoubelle').forEach(button => {
-//     button.addEventListener('click', deleted)
-// });
-
-
+// Fonctione pour supprimer les travaux
 async function deleted(event) {
-event.preventDefault()
-
+    event.preventDefault()
+    // On récupère l'id de l'event
     const id = event.target.id;
 
+    // Appel API
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
         method: 'DELETE',
         headers: {
@@ -270,213 +239,187 @@ event.preventDefault()
 
     if (response.ok) {
 
-        
         document.querySelector('.modal-wrapperTravaux').innerHTML = "";
-        getWorksModal()
-        // genererElementsModal()
-        document.querySelector('.gallery').innerHTML = "";
+        getWorksModal();
 
-        getWorks()
-        // genererElements()
-       
-        // document.querySelector('.modal-wrapper').innerHTML = "";
-        // genererElementsModal()
-        // document.querySelector('.gallery').innerHTML = "";
-        // getWorks()
-        // genererElements()
+        document.querySelector('.gallery').innerHTML = "";
+        getWorks();
 
     } else {
-        throw new Error('Impossible')
-        // document.querySelector('.gallery').innerHTML = "";
-        // getWorks(travaux)
+
+        throw new Error('Impossible, une erreur est survenue');
+
     }
-
-
-}
+};
 
 
 
 
 // ********** Fonction ouvrir/fermer modal **********
 
-// function openCloseModale() {
-    //   let modal = target (la modale)
-    let modal = null;
+//   let modal = target (la modale)
+let modal = null;
 
-    //   Fonction pour ouvrir la modale
-    const openModal = function (e) {
-        e.preventDefault();
-        // On stock la modale dans la const target
-        const target = document.querySelector('.modal');
+//   Fonction pour ouvrir la modale
+const openModal = function (e) {
+    e.preventDefault();
+    // On stock la modale dans la const target
+    const target = document.querySelector('.modal');
 
-        // On retire le display: "none"
-        target.style.display = null;
+    // On retire le display: "none"
+    target.style.display = null;
 
-        /* On remove l'attribut aria-hidden qui est sur "true" en html
-        et on ajoute un attribut aria-modal "true" :
-        DOC arial-modal :
-        https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-modal
-        */
-        target.removeAttribute('aria-hidden');
-        target.setAttribute('aria-modal', 'true');
+    /* On remove l'attribut aria-hidden qui est sur "true" en html
+    et on ajoute un attribut aria-modal "true" :
+    DOC arial-modal :
+    https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-modal
+    */
+    target.removeAttribute('aria-hidden');
+    target.setAttribute('aria-modal', 'true');
 
-        modal = target;
+    modal = target;
 
-        // On ajoute un event à la modal qui a pour fonction "closeModal"
-        modal.addEventListener('click', closeModal);
-        modal.querySelector('.js-btn-close').addEventListener('click', closeModal);
+    // On ajoute un event à la modal qui a pour fonction "closeModal"
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.js-btn-close').addEventListener('click', closeModal);
 
-        /* On ajoute un event à la modal pour stop la propagation quand on 
-        clique sur la modal pour que la fenêtre (modal) ne se ferme pas
-        */
-        modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
+    /* On ajoute un event à la modal pour stop la propagation quand on 
+    clique sur la modal pour que la fenêtre (modal) ne se ferme pas
+    */
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
 
-    }
-
-
-    // Fonction pour close modal
-     function closeModal(e) {
-        if (modal === null) return;
-        e.preventDefault();
-        // On remet le display sur "none", car on veux la faire disparaitre
-        modal.style.display = "none";
-
-        // On remet l'attribut aria-hidden sur "true"
-        modal.setAttribute('aria-hidden', 'true');
-        // On remet remove l'attribut aria-modal pour le remettre sur "false"
-        modal.removeAttribute('aria-modal');
-
-        // On remove l'event closeModal
-        modal.removeEventListener('click', closeModal);
-        modal.querySelector('.js-btn-close').removeEventListener('click', closeModal);
-        modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
-
-        // Quand on ferme la modal, display null "galerie photo" et display none "ajouter photo"
-        modal.querySelector('.modal-wrapper').style.display = null;
-        modal.querySelector('.modal-wrapper-add-pictures').style.display = "none";
-
-        modal = null;
-
-        
-        // reset le formulaire si on ferme la modal
-        document.querySelector('#formAddTravaux').reset()
-    
-        // Remove ajout de l'image si on ferme modal
-        document.getElementById('figureImageFile').remove();
-
-        // Display none la div de confirmation trravail ajouté si on quitte la modal
-        document.querySelector('#confirmAddWorks').style.display = "none";
-        
-        document.querySelector('.messageErreur').style.display = "none"
-    }
-
- 
-
-    // Récupération de la div pour ajouter les travaux
-    const addPictures = document.querySelector('.modal-wrapper input[type="submit"]');
-    addPictures.addEventListener('click', newModal);
-
-    // Fonction pour ouvrir la div "Ajouter photo"
-    function newModal(e) {
-        e.preventDefault();
-
-        modal.querySelector('.modal-wrapper').style.display = "none";
-        modal.querySelector('.modal-wrapper-add-pictures').style.display = null;
-        // modal1.style.display = "none"
-        // newModal2.style.display = null
-        modal.addEventListener('click', closeModal);
-        modal.querySelector('.js-btn-close-pictures').addEventListener('click', closeModal);
-        modal.querySelector('.js-modal-stop-pictures').addEventListener('click', stopPropagation);
-
-    }
+}
 
 
+// Fonction pour close modal
+function closeModal(e) {
+    if (modal === null) return;
+    e.preventDefault();
+    // On remet le display sur "none", car on veux la faire disparaitre
+    modal.style.display = "none";
 
-    // Récupération de la flèche pour faire un retour
-    document.querySelector('.arrow-left').addEventListener('click', retour);
+    // On remet l'attribut aria-hidden sur "true"
+    modal.setAttribute('aria-hidden', 'true');
+    // On remet remove l'attribut aria-modal pour le remettre sur "false"
+    modal.removeAttribute('aria-modal');
 
-    // Fonction pour revenir à la gestion de la galerie photo
-    function retour(e) {
-        e.preventDefault();
-        modal.querySelector('.modal-wrapper').style.display = null;
-        modal.querySelector('.modal-wrapper-add-pictures').style.display = "none";
+    // On remove l'event closeModal
+    modal.removeEventListener('click', closeModal);
+    modal.querySelector('.js-btn-close').removeEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
 
-        // On reset le formulaire d'ajout de travaux quand on fait un retour
-        document.querySelector('#formAddTravaux').reset()
+    // Quand on ferme la modal, display null "galerie photo" et display none "ajouter photo"
+    modal.querySelector('.modal-wrapper').style.display = null;
+    modal.querySelector('.modal-wrapper-add-pictures').style.display = "none";
 
-        // On remove l'image de prévisualisation si retour
-        document.getElementById('figureImageFile').remove();
+    modal = null;
 
-        // On display none la div de confirmation de travaux ajouté si on fait un retour
-        document.querySelector('#confirmAddWorks').style.display = "none"
+    // reset le formulaire si on ferme la modal
+    document.querySelector('#formAddTravaux').reset()
 
-        
-    }
+    // Remove ajout de l'image si on ferme modal
+    document.getElementById('figureImageFile').remove();
 
+    // Display none la div de confirmation travail ajouté si on quitte la modal
+    document.querySelector('#confirmAddWorks').style.display = "none";
 
-    // Fonction pour stoper la propagation par défaut
-    const stopPropagation = function (e) {
-        e.stopPropagation();
-    }
-
-    // On récupère nos boutons "modifier" puis on y ajoute un event
-    document.querySelectorAll('.btnModifierEditer').forEach(a => {
-        a.addEventListener('click', openModal);
-
-    })
-
-    //  On ajoute un event "keydown" pour permettre de quitter la modal avec la touche "Echap"
-    window.addEventListener('keydown', function (e) {
-        if (e.key === "Escape" || e.key === "Esc") {
-            closeModal(e);
-        };
+    // Remove disabled les champs
+    document.querySelectorAll('#formAddTravaux input').forEach(attribut => {
+        attribut.removeAttribute("disabled", "");
     });
 
+    document.querySelector('#formAddTravaux select').removeAttribute("disabled", "");
+};
 
 
-// };
+
+// Récupération de la div pour ajouter les travaux
+const addPictures = document.querySelector('.modal-wrapper input[type="submit"]');
+addPictures.addEventListener('click', newModal);
+
+// Fonction pour ouvrir la div "Ajouter photo"
+function newModal(e) {
+    e.preventDefault();
+
+    modal.querySelector('.modal-wrapper').style.display = "none";
+    modal.querySelector('.modal-wrapper-add-pictures').style.display = null;
+
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.js-btn-close-pictures').addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop-pictures').addEventListener('click', stopPropagation);
+
+};
+
+
+
+// Récupération de la flèche pour faire un retour
+document.querySelector('.arrow-left').addEventListener('click', retour);
+
+// Fonction pour revenir à la gestion de la galerie photo
+function retour(e) {
+    e.preventDefault();
+    modal.querySelector('.modal-wrapper').style.display = null;
+    modal.querySelector('.modal-wrapper-add-pictures').style.display = "none";
+
+    // On reset le formulaire d'ajout de travaux quand on fait un retour
+    document.querySelector('#formAddTravaux').reset()
+
+    // On remove l'image de prévisualisation si retour
+    document.getElementById('figureImageFile').remove();
+
+    // On display none la div de confirmation de travaux ajouté si on fait un retour
+    document.querySelector('#confirmAddWorks').style.display = "none"
+
+    // Remove disabled les champs
+    document.querySelectorAll('#formAddTravaux input').forEach(attribut => {
+        attribut.removeAttribute("disabled", "");
+    });
+
+    document.querySelector('#formAddTravaux select').removeAttribute("disabled", "");
+};
+
+
+// Fonction pour stoper la propagation par défaut
+const stopPropagation = function (e) {
+    e.stopPropagation();
+};
+
+// On récupère nos boutons "modifier" puis on y ajoute un event
+document.querySelectorAll('.btnModifierEditer').forEach(a => {
+    a.addEventListener('click', openModal);
+
+});
+
+//  On ajoute un event "keydown" pour permettre de quitter la modal avec la touche "Echap"
+window.addEventListener('keydown', function (e) {
+    if (e.key === "Escape" || e.key === "Esc") {
+        closeModal(e);
+    };
+});
+
+
+
 
 // ********** Ajout travaux **********
 
-// Fonction qui vérifie la validiter de l'input
-const title = document.querySelector('#titrePictures')
-
-// On ajoute un listener "invalid"
-title.addEventListener("invalid", function(event) {
-    event.target.setCustomValidity("");
-
-    if(!event.target.validity.valid) {
-        // Si le champ est vide on modifie le message
-        if (event.target.value.length == 0) {
-            event.target.setCustomValidity("Veuillez ajouter un titre")
-        }
-    }
-    
-})
-
 // Récupération de la div pour afficher le message si l'envoie des travaux a réussi
-
 const confirmAddWorks = document.querySelector('#confirmAddWorks');
-// Récupération de la balise pour mettre un message d'erreur
-let myErrorForm = document.querySelector('.messageErreur')
-
 
 // Fonction pour ajouter les travaux
-function ajoutTravaux() {
+async function ajoutTravaux() {
 
     // On récupère le formulaire d'ajout des travaux
-    const formAjoutTravaux = document.querySelector('#formAddTravaux')
-    console.log(formAjoutTravaux)
-    
+    const formAjoutTravaux = document.querySelector('#formAddTravaux');
+
     // On ajoute un Listener submit
     formAjoutTravaux.addEventListener("submit", async function (e) {
-        e.preventDefault()
+        e.preventDefault();
 
         // On récupère les valeurs des inputs
         let title = document.querySelector('#titrePictures').value;
         let image = document.querySelector('#addPictures').files[0];
         let category = document.querySelector('#categoriePictures').value;
-        
+
         console.log(category);
 
         const formData = new FormData();
@@ -496,62 +439,87 @@ function ajoutTravaux() {
         });
 
         if (response.ok) {
+
             // Si reponse = true on reset le formulaire
-            document.querySelector('#formAddTravaux').reset()
-            
-            // On remove le listener qui permet de fermer la modal
-            modal.removeEventListener('click', closeModal);
-            modal.querySelector('.js-btn-close-pictures').removeEventListener('click', closeModal);
-            modal.querySelector('.js-modal-stop-pictures').removeEventListener('click', stopPropagation);
-           
+            document.querySelector('#formAddTravaux').reset();
+
+            // Disabled les champs
+            document.querySelectorAll('#formAddTravaux input').forEach(attribut => {
+                attribut.setAttribute("disabled", "");
+            });
+            document.querySelector('#formAddTravaux select').setAttribute("disabled", "");
+
             // On fait apparaître notre message de confirmation
             confirmAddWorks.style.display = null;
 
             // On refresh la page
             document.querySelector('.modal-wrapperTravaux').innerHTML = "";
             // Appel de la fonction pour afficher les travaux ajouter
-            getWorksModal()
-        // genererElementsModal()
+            getWorksModal();
+
             document.querySelector('.gallery').innerHTML = "";
-            getWorks()
-            
-        // genererElements()
-            
-            /* Si il y a eu un message d'erreur et que tous les champ
-            on bien était rempli on enlève le message d'erreur*/
-            myErrorForm = document.querySelector('.messageErreur')
-            myErrorForm.style.display = "none"
+            getWorks();
+
         } else {
-        
-            // On récupère notre balise pour le message d'erreur
-            myErrorForm = document.querySelector('.messageErreur')
-            myErrorForm.style.display = "block"
-            myErrorForm.innerText = "Erreur dans le formulaire, veuillez ajouter une image"
-            
-            throw new Error(`Une erreur est survenue`)
-        } 
-        
-    })
-}
-ajoutTravaux()
+
+            throw new Error(`Une erreur est survenue`);
+
+        };
+    });
+};
+
+ajoutTravaux();
+
+// Fonction qui vérifie la validiter de l'input
+const file = document.querySelector('#addPictures')
+
+// On ajoute un listener "invalid"
+file.addEventListener("invalid", function (event) {
+    event.target.setCustomValidity("");
+
+    if (!event.target.validity.valid) {
+        // Si le champ est vide on modifie le message
+        if (event.target.value.length == 0) {
+            event.target.setCustomValidity("Erreur dans le formulaire, veuillez ajouter une image")
+        };
+    };
+
+});
+
+// Fonction qui vérifie la validiter de l'input
+const title = document.querySelector('#titrePictures')
+
+// On ajoute un listener "invalid"
+title.addEventListener("invalid", function (event) {
+    event.target.setCustomValidity("");
+
+    if (!event.target.validity.valid) {
+        // Si le champ est vide on modifie le message
+        if (event.target.value.length == 0) {
+            event.target.setCustomValidity("Erreur dans le formulaire, veuillez ajouter un titre")
+        };
+    };
+
+});
 
 
 // On récupère notre btn de confirmation
-const btnConfirmAddWorks = document.querySelector('#btnConfirmAddWorks')
+const btnConfirmAddWorks = document.querySelector('#btnConfirmAddWorks');
 
 // On ajoute un listener
 btnConfirmAddWorks.addEventListener('click', (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // On remove l'image si le formulaire est envoyé
     document.getElementById('figureImageFile').remove();
-    // On remet le listener pour close modal
-    modal.addEventListener('click', closeModal);
-    
-    modal.querySelector('.js-btn-close-pictures').addEventListener('click', closeModal);
-    modal.querySelector('.js-modal-stop-pictures').addEventListener('click', stopPropagation);
-   
+
+    // Remove disabled les champs
+    document.querySelectorAll('#formAddTravaux input').forEach(attribut => {
+        attribut.removeAttribute("disabled", "");
+    });
+    document.querySelector('#formAddTravaux select').removeAttribute("disabled", "");
+
     // On retire ensuite le message de validation
-    confirmAddWorks.style.display = "none"
+    confirmAddWorks.style.display = "none";
 });
 
 
@@ -560,14 +528,13 @@ btnConfirmAddWorks.addEventListener('click', (e) => {
 // Prévisualisation de l'image
 
 // Récupération de l'input pour ajouter des travaux
-const fileUploadInput = document.querySelector('#addPictures')
+const fileUploadInput = document.querySelector('#addPictures');
 
-fileUploadInput.addEventListener('change', previewFile)
+fileUploadInput.addEventListener('change', previewFile);
 
 // fonction pour prévilualiser l'image
-function previewFile(e) {
-e.preventDefault()
-// Regex
+function previewFile() {
+    // Regex
     const file_extendion_regex = /\.(jpe?g|png|gif)$/i;
 
     let imgFiles = fileUploadInput.files;
@@ -575,7 +542,7 @@ e.preventDefault()
     // Pour ne pas exécuter le code si files.length = 0 ou regex incorecte
     if (fileUploadInput.files.length === 0 || !file_extendion_regex.test(imgFiles[0].name)) {
         return;
-    }
+    };
 
     // stocker le fichier
     const file = imgFiles[0];
@@ -587,93 +554,54 @@ e.preventDefault()
 
     file_reader.addEventListener('load', function (event) {
         displayImage(event, file);
-        event.preventDefault()
-    })
-
-}
-
+        event.preventDefault();
+    });
+};
 
 
 
-function displayImage(event, file) {
-    event.preventDefault()
-    event.stopPropagation()
 
+function displayImage(event) {
     // Récupération du de la div pour ajouter l'image
     const blocImage = document.querySelector('#bloc-add-pictures');
 
     // Création d'une div pour accueillir l'image
-    const figureImageFile = document.createElement('figure')
-    figureImageFile.setAttribute('id', 'figureImageFile')
+    const figureImageFile = document.createElement('figure');
+    figureImageFile.setAttribute('id', 'figureImageFile');
 
     // Création d'une image
-    const imageElement = document.createElement('img')
+    const imageElement = document.createElement('img');
 
     // On récupère le resultat de l'image
     imageElement.src = event.target.result;
-    imageElement.setAttribute('id', 'imgFileInput')
+    imageElement.setAttribute('id', 'imgFileInput');
 
     // On créer un bouton pour pouvoir supprimer l'image
-    const delete_button_element = document.createElement('button')
-    delete_button_element.setAttribute('class', "fa-solid fa-trash-can image_delete_button")
-    
-
+    const delete_button_element = document.createElement('button');
+    delete_button_element.setAttribute('class', "fa-solid fa-trash-can image_delete_button");
 
     // On ajoute l'élément image et le bouton à la div qui accueil l'image
-    figureImageFile.append(imageElement)
-    figureImageFile.append(delete_button_element)
-    
+    figureImageFile.append(imageElement);
+    figureImageFile.append(delete_button_element);
+
     // On ajoute la duvImage au parent bloc-add-pictures
-    blocImage.append(figureImageFile)
+    blocImage.append(figureImageFile);
 
     // Fonction qui supprime l'image au click
     delete_button_element.addEventListener("click", (event) => {
-        fileUploadInput.value = ""
+        fileUploadInput.value = "";
 
         // Récupération du parent (figureImageFile)
         event.target.parentElement.remove();
-    })
-}
+    });
+};
 
-const userImage = document.querySelector('#addPictures')
+const userImage = document.querySelector('#addPictures');
 userImage.addEventListener('input', function (e) {
-    e.preventDefault()
-    
-    const fileList = userImage.files
-    console.log(fileList)
-    console.log(fileList[0])
+    e.preventDefault();
 
-})
+    const fileList = userImage.files;
+    console.log(fileList);
+    console.log(fileList[0]);
 
-// let idWork;
-// let ids = [];
-// function supprMedia() {
-//     const poubelles = document.querySelectorAll('.btnPoubelle')
-//     for (let poubelle of poubelles) {
-//         poubelle.addEventListener("click", (e) => {
-//             e.preventDefault()
-//             idWork = e.target.parentNode.childNodes[0].currentSrc;
-//             ids.push(e.target.parentElement.dataset.id);
-            
-//             openCloseModale(e)
-//             console.log("ccc")
-//         })
-//     }
-// }
-
-// supprMedia()
-
-// const publierChangement = document.querySelector('#publierChangements')
-// publierChangement.addEventListener('click', () => {
-//     for (let i of ids) {
-//         fetch(`http://localhost:5678/api/works/${ids[i]}`, {
-//             method: 'DELETE',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: `Bearer ${token}`
-//             }
-//         })
-//     }
-
-    
-// })
+});

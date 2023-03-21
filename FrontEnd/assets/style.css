@@ -661,14 +661,6 @@ input[type="file"] {
 	opacity: 1;
 }
 
-.messageErreur {
-	color: red;
-	position: absolute;
-	bottom: 20px;
-	left: 22%;
-	
-}
-
 #confirmAddWorks {
 	position: absolute;
 	display: flex;

@@ -1,4 +1,8 @@
 // Athentification
+
+let myErrorEmail = document.querySelector('#errorEmail')
+let myErrorPassword = document.querySelector('#errorPassword')
+
 async function connexion() {
 
   const formulaireLogIn = document.querySelector('#formLogIn');
@@ -36,27 +40,36 @@ async function connexion() {
       window.location.href = 'index.html';
       
     } else if (response.status === 404){
-     
-      let myErrorEmail = document.querySelector('#errorEmail')
+    
       myErrorEmail.style.display = "block"
       myErrorEmail.innerHTML = "L'email est incorrect !"
       myErrorEmail.style.color = "red"
+      
          
     } else if (response.status === 401) {
       
-      let myErrorPassword = document.querySelector('#errorPassword')
       myErrorPassword.style.display = "block"
       myErrorPassword.innerHTML = "Le mot de passe est incorrect !"
       myErrorPassword.style.color = "red"
       
-    }
-     
-    throw new Error("Impossible d'accéder au serveur !");
-  
+    } else {
+
+      throw new Error("Impossible d'accéder au serveur !");
+
+    } 
   });
 };
 
 connexion();
 
 
+// Permet de reset les messages d'erreurs
+document.querySelector('#email').addEventListener("input", function(e) {
+  e.preventDefault()
+  myErrorEmail.style.display = "none"
+})
 
+document.querySelector('#password').addEventListener("input", function(e) {
+  e.preventDefault()
+  myErrorPassword.style.display = "none"
+})
