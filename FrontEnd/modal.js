@@ -79,7 +79,7 @@ async function genererOption() {
 };
 
 
-// HEADER AVEC BANNIERE EDITEUR
+// ********** HEADER AVEC BANNIERE EDITEUR **********
 function changeIndexHtml() {
 
     // Récupération de la balise header
@@ -131,7 +131,7 @@ function changeIndexHtml() {
 changeIndexHtml()
 
 
-// BOUTON MODIFIER
+// ********** BOUTON MODIFIER **********
 function creationBoutonModifier() {
     // BOUTON MODIFIER INTRODUCTION
     let btnModifier;
@@ -523,9 +523,9 @@ btnConfirmAddWorks.addEventListener('click', (e) => {
 });
 
 
-// *********************************************************
 
-// Prévisualisation de l'image
+
+// ********** Prévisualisation de l'image **********
 
 // Récupération de l'input pour ajouter des travaux
 const fileUploadInput = document.querySelector('#addPictures');
